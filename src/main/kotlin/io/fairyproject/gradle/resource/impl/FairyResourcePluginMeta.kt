@@ -3,6 +3,7 @@ package io.fairyproject.gradle.resource.impl
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import io.fairyproject.gradle.dependency.DependencyData
 import io.fairyproject.gradle.extension.FairyExtension
 import io.fairyproject.gradle.resource.*
 import org.gradle.api.Project
@@ -25,7 +26,7 @@ open class FairyResourcePluginMeta: FairyResource {
         }
 
         val jsonArray = JsonArray()
-//        extension.getLibraries().forEach { lib -> jsonArray.add(lib.toJsonObject()) } // TODO
+        DependencyData.libraries.forEach { lib -> jsonArray.add(lib.jsonObject) } // TODO
         jsonObject.add("libraries", jsonArray)
 
         return resourceOf("fairy.json", gson.toJson(jsonObject).encodeToByteArray())

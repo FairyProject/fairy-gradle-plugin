@@ -52,7 +52,9 @@ class DependencyManagementPlugin : Plugin<Project> {
             val libraries = mutableListOf<Lib>()
             val exclusives = mutableListOf<Pair<String, String>>()
             configuration.forEach { readFile(it, libraries, exclusives) }
-//            TODO("add libraries and exclusives to compiler task.")
+
+            DependencyData.libraries = libraries
+            DependencyData.exclusives = exclusives
         }
     }
 
@@ -119,8 +121,8 @@ class DependencyManagementPlugin : Plugin<Project> {
 
     private fun writeCacheBom(project: Project, model: Model) {
         val file = project.buildDir.resolve("fairy/bom-${model.version}.pom")
-        if (file.exists())
-            file.delete()
+        if (file.exists()) file.delete()
+        if (!file.parentFile.exists()) file.parentFile.mkdirs()
 
         file.createNewFile()
         val writer = MavenXpp3Writer()

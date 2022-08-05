@@ -1,8 +1,10 @@
 package io.fairyproject.gradle.resource
 
 import io.fairyproject.gradle.constants.ClassConstants
+import io.fairyproject.gradle.dependency.DependencyData
 import io.fairyproject.gradle.extension.FairyExtension
 import org.gradle.api.Action
+import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.jvm.tasks.Jar
 import org.objectweb.asm.ClassReader
@@ -26,6 +28,7 @@ open class FairyResourceAction : Action<Task> {
 
             // Read input jar information and copy to temporary file
             for (entry in inJar.entries()) {
+                if (this.shouldExcludeFile(project, entry)) continue
                 val bytes = inJar.getInputStream(entry).readBytes()
                 // The entry is a class file
                 if (entry.name.endsWith(".class")) {
@@ -82,6 +85,25 @@ open class FairyResourceAction : Action<Task> {
         // Write temporary file back to original file
         outputFile.copyTo(file, true)
         outputFile.delete()
+    }
+
+    private fun shouldExcludeFile(project: Project, jarEntry: JarEntry): Boolean {
+        if (jarEntry.name.equals("module.json")) return true
+        if (jarEntry.name.equals("plugin.yml")) return true
+
+        for ((classpath, module) in DependencyData.exclusives) {
+            if (jarEntry.name.replace('/', '.').startsWith(classpath) &&
+                    !this.hasDependency(project, module)) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private fun hasDependency(project: Project, name: String): Boolean {
+        // hacky? I don't know
+        return project.configurations.any { configuration -> configuration.dependencies.any { dependency -> dependency.name.equals(name) } }
     }
 
     private fun hasInternalMetadata(classInfo: ClassInfo): Boolean =
