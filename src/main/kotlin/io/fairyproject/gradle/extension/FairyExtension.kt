@@ -9,6 +9,7 @@ import org.gradle.api.provider.Property
 open class FairyExtension(objectFactory: ObjectFactory) {
 
     val version: Property<String> = objectFactory.property(String::class.java)
+    val mainPackage: Property<String> = objectFactory.property(String::class.java)
     val bootstraps: Property<Boolean> = objectFactory.property(Boolean::class.java)
     val compile: Property<Boolean> = objectFactory.property(Boolean::class.java)
     val tests: Property<Boolean> = objectFactory.property(Boolean::class.java)

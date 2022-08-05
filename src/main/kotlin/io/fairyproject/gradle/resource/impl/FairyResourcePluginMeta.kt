@@ -24,6 +24,9 @@ open class FairyResourcePluginMeta: FairyResource {
         if (classInfo != null) {
             jsonObject.addProperty("mainClass", classInfo.name.replace('/', '.'))
         }
+        fairyExtension.mainPackage.orNull ?.let {
+            jsonObject.addProperty("shadedPackage", it)
+        }
 
         val jsonArray = JsonArray()
         DependencyData.libraries.forEach { lib -> jsonArray.add(lib.jsonObject) }
