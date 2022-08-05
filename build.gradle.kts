@@ -25,7 +25,7 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        create("fairyPlugin") {
+        create("fairy") {
             displayName = "Fairy plugin"
             description = "A Gradle plugin that provides ability to manage fairy project easily."
             id = "io.fairyproject"
@@ -36,15 +36,8 @@ gradlePlugin {
 
 pluginBundle {
     tags = listOf("fairy", "bukkit", "minecraft")
-
-    plugins {
-        create("fairy") {
-            displayName = "Fairy Gradle Plugin"
-            description = "The fairy gradle plugin"
-            website = "https://github.com/FairyProject/fairy"
-            vcsUrl = "https://github.com/FairyProject/fairy"
-        }
-    }
+    website = "https://github.com/FairyProject/fairy"
+    vcsUrl = "https://github.com/FairyProject/fairy"
 }
 
 tasks.withType<KotlinCompile> {
