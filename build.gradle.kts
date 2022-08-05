@@ -3,10 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.7.10"
     `java-gradle-plugin`
+    `maven-publish`
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "io.fairyproject"
+version = "0.0.1b2-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -18,6 +19,7 @@ dependencies {
     implementation("khttp:khttp:1.0.0")
     implementation("org.ow2.asm:asm:9.3")
     implementation("org.ow2.asm:asm-commons:9.3")
+    implementation("com.google.code.gson:gson:2.9.1")
 }
 
 gradlePlugin {

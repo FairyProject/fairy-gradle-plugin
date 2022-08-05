@@ -6,7 +6,7 @@ import java.util.stream.Collectors
 class Bom(model: Model) {
 
     val version = model.version
-    val modules = model.dependencies.stream()
+    val modules = model.dependencyManagement.dependencies.stream()
         .map { it.artifactId }
         .collect(Collectors.toSet())
 
