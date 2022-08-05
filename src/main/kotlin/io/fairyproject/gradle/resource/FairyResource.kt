@@ -1,6 +1,7 @@
 package io.fairyproject.gradle.resource
 
 import io.fairyproject.gradle.extension.FairyExtension
+import io.fairyproject.gradle.resource.impl.FairyResourceBukkitMeta
 import io.fairyproject.gradle.resource.impl.FairyResourcePluginMeta
 import org.gradle.api.Project
 
@@ -10,12 +11,13 @@ interface FairyResource {
         project: Project,
         fairyExtension: FairyExtension,
         classMapper: Map<ClassType, ClassInfo>
-    ): ResourceInfo
+    ): ResourceInfo?
 
     companion object {
 
         val ALL = arrayOf(
-            FairyResourcePluginMeta()
+            FairyResourcePluginMeta(),
+            FairyResourceBukkitMeta()
         )
 
     }

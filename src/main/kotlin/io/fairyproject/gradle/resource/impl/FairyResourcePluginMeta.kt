@@ -26,7 +26,7 @@ open class FairyResourcePluginMeta: FairyResource {
         }
 
         val jsonArray = JsonArray()
-        DependencyData.libraries.forEach { lib -> jsonArray.add(lib.jsonObject) } // TODO
+        DependencyData.libraries.forEach { lib -> jsonArray.add(lib.jsonObject) }
         jsonObject.add("libraries", jsonArray)
 
         return resourceOf("fairy.json", gson.toJson(jsonObject).encodeToByteArray())

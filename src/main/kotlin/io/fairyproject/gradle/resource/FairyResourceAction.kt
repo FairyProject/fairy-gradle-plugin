@@ -76,9 +76,10 @@ open class FairyResourceAction : Action<Task> {
 
             // Generate resource
             FairyResource.ALL.forEach {
-                val resource = it.generate(project, extension, classMapper)
-                output.putNextEntry(JarEntry(resource.name))
-                output.write(resource.byteArray)
+                it.generate(project, extension, classMapper) ?.let { resource ->
+                    output.putNextEntry(JarEntry(resource.name))
+                    output.write(resource.byteArray)
+                }
             }
         }}
 
