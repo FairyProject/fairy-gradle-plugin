@@ -9,8 +9,8 @@ class BukkitProperties : Properties(PlatformType.BUKKIT) {
     // TODO - add all bukkit properties
 
     var bukkitApi: String
-        get() = this["bukkitApi"] as String
-        set(value) { this["bukkitApi"] = value }
+        get() = this["api-version"] as String
+        set(value) { this["api-version"] = value }
 
     val authors: MutableList<String> by lazy {
         val list = mutableListOf<String>()

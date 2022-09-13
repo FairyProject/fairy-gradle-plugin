@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileReader
 import java.io.InputStreamReader
+import java.net.URL
 import java.util.jar.JarFile
 
 class DependencyManagementPlugin : Plugin<Project> {
@@ -89,7 +90,7 @@ class DependencyManagementPlugin : Plugin<Project> {
         if (cacheable)
             readCacheBom(project, version) ?.let { return it }
 
-        val jsonObject = khttp.get(UrlConstants.bomDetailsUrl.format(version)).jsonObject
+        val jsonObject = JSONObject(URL(UrlConstants.bomDetailsUrl.format(version)).openStream().readBytes().toString(Charsets.UTF_8))
         val files = jsonObject.getJSONArray("files")
         files.forEach {
             val json = it as JSONObject
@@ -98,7 +99,7 @@ class DependencyManagementPlugin : Plugin<Project> {
 
             if (contentType == "application/xml") {
                 val reader = MavenXpp3Reader()
-                val raw = khttp.get(UrlConstants.bomUrl.format(version, name)).content
+                val raw = URL(UrlConstants.bomUrl.format(version, name)).openStream().readBytes()
                 val model = reader.read(ByteArrayInputStream(raw))
 
                 if (cacheable)

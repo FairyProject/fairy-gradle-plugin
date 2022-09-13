@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "io.fairyproject"
-version = "1.3.0b2"
+version = "1.3.0b4"
 
 repositories {
     mavenCentral()
