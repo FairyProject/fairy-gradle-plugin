@@ -8,6 +8,7 @@ import io.fairyproject.gradle.dependency.bom.Bom
 import io.fairyproject.gradle.extension.FairyExtension
 import io.fairyproject.gradle.lib.Lib
 import io.fairyproject.gradle.lib.libOf
+import khttp.get
 import org.apache.maven.model.Model
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer
@@ -15,13 +16,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.json.JSONObject
-import java.io.BufferedInputStream
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileReader
-import java.io.InputStreamReader
-import java.net.URL
+import java.io.*
 import java.util.jar.JarFile
 
 class DependencyManagementPlugin : Plugin<Project> {
@@ -90,16 +85,16 @@ class DependencyManagementPlugin : Plugin<Project> {
         if (cacheable)
             readCacheBom(project, version) ?.let { return it }
 
-        val jsonObject = JSONObject(URL(UrlConstants.bomDetailsUrl.format(version)).openStream().readBytes().toString(Charsets.UTF_8))
+        val jsonObject = get(UrlConstants.bomDetailsUrl.format(version)).jsonObject
         val files = jsonObject.getJSONArray("files")
         files.forEach {
             val json = it as JSONObject
-            val name = json.getString("name")
-            val contentType = json["contentType"]
+            val name = json["name"].toString()
+            val contentType = json["contentType"].toString()
 
             if (contentType == "application/xml") {
                 val reader = MavenXpp3Reader()
-                val raw = URL(UrlConstants.bomUrl.format(version, name)).openStream().readBytes()
+                val raw = get(UrlConstants.bomUrl.format(version, name)).content
                 val model = reader.read(ByteArrayInputStream(raw))
 
                 if (cacheable)

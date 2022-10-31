@@ -2,25 +2,24 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.10"
-    id("com.gradle.plugin-publish") version "0.14.0"
+    id("com.gradle.plugin-publish") version "1.0.0"
     `java-gradle-plugin`
     `maven-publish`
 }
 
 group = "io.fairyproject"
-version = "1.3.0b4"
+version = "1.3.0b9"
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
+    implementation("org.json:json:20220924")
     implementation("org.apache.maven:maven-plugin-api:3.8.5")
-    implementation("khttp:khttp:1.0.0")
-    implementation("org.ow2.asm:asm:9.3")
-    implementation("org.ow2.asm:asm-commons:9.3")
-    implementation("com.google.code.gson:gson:2.9.1")
+    implementation("org.ow2.asm:asm:9.4")
+    implementation("org.ow2.asm:asm-commons:9.4")
+    implementation("com.google.code.gson:gson:2.10")
 }
 
 gradlePlugin {
